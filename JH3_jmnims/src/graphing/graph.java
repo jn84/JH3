@@ -100,13 +100,13 @@ public class graph extends JFrame
 
     public static void main(String[] args) {
         ArrayList<GBar> garr = new ArrayList<GBar>();
-        garr.add(new GBar("Bubba", 320));
-        garr.add(new GBar("Adrian Petersen", 235));
-        garr.add(new GBar("Sproules",165));
-        garr.add(new GBar("RG3",212));
         
-        graph gb= new graph(garr);
+        graphDataReader gdr = new graphDataReader("graphing.txt");
+        
+        for (int i = 0; i < gdr.GetNumberOfDataPoints(); i++)
+        	garr.add(new GBar(gdr.GetName(i), gdr.GetScore(i)));
+     
+        graph gb = new graph(garr);
 
     }
-
 }
