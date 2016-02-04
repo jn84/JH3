@@ -119,7 +119,7 @@ public class Graphing extends JFrame
         g.drawLine(strMaxWidth, top, strMaxWidth, dimen.height);
         
         g.setColor(Color.RED);
-        g.fillRect(left - BORDER_WIDTH, top - BORDER_WIDTH, dimen.width, BORDER_WIDTH);  	// top
+        g.fillRect(left - BORDER_WIDTH, top - BORDER_WIDTH, dimen.width, BORDER_WIDTH);  	// top  
         g.fillRect(left - BORDER_WIDTH, top - BORDER_WIDTH, BORDER_WIDTH, dimen.height); 	// left
         g.fillRect(dimen.width - right, top - BORDER_WIDTH, BORDER_WIDTH, dimen.height);	// right
         g.fillRect(left - BORDER_WIDTH, dimen.height - bottom, dimen.width, BORDER_WIDTH);	// bottom
