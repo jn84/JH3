@@ -47,10 +47,14 @@ public class GraphDataReader
 			String temp = "";
 			
 			dataTokens = new StringTokenizer(inStream.nextLine(), ";");
+			
+			if (!dataTokens.hasMoreTokens())  // Encountered a blank line of input, try the next line
+				continue;
+			
 			temp = dataTokens.nextToken();
 			names.add(temp);
 			
-			if (!dataTokens.hasMoreTokens())
+			if (!dataTokens.hasMoreTokens()) // Line is missing the score value or was improperly formatted. Call for error state
 				return true;
 			
 			temp = dataTokens.nextToken();
