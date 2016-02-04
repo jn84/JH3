@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+// Reads and stores the graph data from file at dataFileName
+// If isError is true, there has been a failure somewhere and no data can be returned from the class
+
 public class GraphDataReader 
 {
 	private boolean isError = false;
@@ -33,6 +36,8 @@ public class GraphDataReader
 		inputStream.close();
 	}
 	
+	
+	// Returns TRUE if there is an error and the file was unreadable
 	private boolean PopulateArrays(Scanner inStream)
 	{
 		StringTokenizer dataTokens = null;
@@ -72,6 +77,8 @@ public class GraphDataReader
 		return false;
 	}
 	
+	// Getters to return sane values depending on whether or not 
+	// the data file was successfully read
 	public boolean IsError()
 	{
 		return isError;
@@ -86,14 +93,14 @@ public class GraphDataReader
 	
 	public String GetName(int n)
 	{
-		if (isError)
+		if (isError || n < 0 || n >= names.size())
 			return "";
 		return names.get(n);
 	}
 	
 	public int GetScore(int s)
 	{
-		if (isError)
+		if (isError || s < 0 || s >= names.size())
 			return -1;
 		return scores.get(s);
 	}

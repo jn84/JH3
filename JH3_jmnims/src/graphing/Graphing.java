@@ -35,17 +35,13 @@ public class Graphing extends JFrame
 	{
 		super();
 
+		// Read the graph data
 		gdr = new GraphDataReader(dataFileName);
 
 		if (!gdr.IsError())
-		{
-			this.setTitle(gdr.GetTitle());
-
 			for (int i = 0; i < gdr.GetNumberOfDataPoints(); i++)
 				gbarArr.add(new GBar(gdr.GetName(i), gdr.GetScore(i)));
-		}
-		else
-			this.setTitle("Error");
+
 		setSize(600, 600);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -83,8 +79,8 @@ public class Graphing extends JFrame
 
 		Dimension dimen = getSize();
 		Insets insets = getInsets();
-		int top = insets.top + BORDER_WIDTH;
-		int left = insets.left + BORDER_WIDTH;
+		int top = insets.top + BORDER_WIDTH;	// Add the border width here so that every 
+		int left = insets.left + BORDER_WIDTH;	// other element is is on board with it
 		int right = insets.right + BORDER_WIDTH;
 		int bottom = insets.bottom + BORDER_WIDTH;
 
@@ -99,15 +95,17 @@ public class Graphing extends JFrame
 			int strMaxWidth = left + getMaxTextWidth(gbarArr, fm);
 			int x_bar_start = strMaxWidth + 1/* a little white space pad */;
 
-			int barMaxValue = getMaxBarWidth(gbarArr);
+			int barMaxValue = getMaxBarWidth(gbarArr);   
+			//  - BORDER_WIDTH adds some space between border and longest graph bar
 			double scale = (dimen.width - x_bar_start - right - BORDER_WIDTH) / (double) barMaxValue;
 
 			int y_start = top;
 
 			int bar_height = fontHeight;
 
-			for (int i = 0; i < gbarArr.size(); i++) // draw the graph
-														// components
+			this.setTitle(gdr.GetTitle());
+			
+			for (int i = 0; i < gbarArr.size(); i++) // draw the graph components
 			{
 				String text = gbarArr.get(i).text;
 				int strWidth = fm.stringWidth(text);
@@ -135,24 +133,18 @@ public class Graphing extends JFrame
 			int errorTextAscent = fm.getMaxAscent();
 			int errorTextHeight = fm.getHeight();
 			int errorTextTopPos = top + errorTextAscent;
-			
 			g.setFont(font);
+
+			this.setTitle("Error");
 			g.drawString("An error occurred while loading the graph data.", left, errorTextTopPos);
-			g.drawString("File not found or\n improperly formatted.", left, errorTextTopPos + errorTextHeight);
-			
+			g.drawString("File inaccessible or improperly formatted.", left, errorTextTopPos + errorTextHeight);
 		}
 	}
 
 	public static void main(String[] args)
 	{
-		Graphing graph = null;
-		try
-		{
-			graph = new Graphing(args[0]);
-		}
-		catch (ArrayIndexOutOfBoundsException e)
-		{
-			graph = new Graphing("");
-		}
+		// If no filename argument was passed, we still want to  
+		// display the window and show an error
+		Graphing graph = new Graphing(args.length >= 1 ? args[0] : "");
 	}
 }
