@@ -66,7 +66,7 @@ class ChessPiece
 
 
 // Stores the board dimensions 
-// Should adjust when the window size is change to manage scaling
+// Should adjust when the window size is changed to manage scaling
 class BoardDimensions 
 {
     int left, top, square_width, square_height;
