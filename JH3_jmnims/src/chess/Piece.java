@@ -69,6 +69,9 @@ class ChessPiece
 // Should adjust when the window size is changed to manage scaling
 class BoardDimensions 
 {
+	// LEFT AND TOP are the position in the window (insets)
+	
+	
     int left, top, square_width, square_height;
     BoardDimensions(int left, int top, int square_width, int square_height)
     {
@@ -90,6 +93,7 @@ class Piece
     PieceType pieceType;  
     ColorType color;      
     			  
+    // should take the x,y for the position (0-7, 0-7)
     public Piece (PieceType p, ColorType color, int xSquare, int ySquare)
     {
         this.pieceType = p;
