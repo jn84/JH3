@@ -20,7 +20,7 @@ class DrawingProperties
 	}
 	public String toString()
 	{
-		return drawType + " color=" + color +" filled="+ filled;
+		return drawType + "      color = " + color +"      filled = "+ filled;
 	}
 }
 
@@ -65,10 +65,10 @@ public class Drawing {
 			inProgress = new Rectangle(drawingProperties.color, drawingProperties.filled);
 			break;
 		case oval:
-			//inProgress = new Oval(drawingProperties.color, drawingProperties.filled);
+			inProgress = new Oval(drawingProperties.color, drawingProperties.filled);
 			break;
 		case line:
-			//inProgress = new Line(drawingProperties.color);
+			inProgress = new Line(drawingProperties.color);
 			break;
 		case scribble:
 			inProgress = new Scribble(drawingProperties.color);
@@ -94,6 +94,12 @@ public class Drawing {
 		inProgress.subsequentPoint(p);
 		shapeArr.add(inProgress);
 		inProgress = null;
+	}
+	public void mouseClicked(Point point)
+	{
+		// Handle toolbar clicks here
+		// Polygon clicks also?
+		
 	}
 
 }

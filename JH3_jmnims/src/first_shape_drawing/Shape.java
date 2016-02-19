@@ -18,7 +18,7 @@ abstract class Shape
 }
 class Rectangle extends Shape
 {
-	boolean filled=false;
+	boolean filled = false;
 	Point start;
 	Point lastPoint;
 	Rectangle(Color c, boolean filled)
@@ -46,9 +46,9 @@ class Rectangle extends Shape
 
 	}
 	@Override
-	void subsequentPoint(Point p) {
-		lastPoint =p;
-
+	void subsequentPoint(Point p) 
+	{
+		lastPoint = p;
 	}
 }
 
@@ -82,4 +82,70 @@ class Scribble extends Shape
 	}
 }
 
+class Oval extends Shape
+{
+	boolean filled = false;
+	Point start;
+	Point lastPoint;
+	Oval(Color c, boolean filled)
+	{
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
 
+	@Override
+	void firstPoint(Point p)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void draw(Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void subsequentPoint(Point p)
+	{
+		lastPoint = p;
+		
+	}
+	
+}
+
+
+class Line extends Shape
+{
+	Point start;
+	Point lastPoint;
+	Line(Color c)
+	{
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	void firstPoint(Point p)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void draw(Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void subsequentPoint(Point p)
+	{
+		lastPoint = p;
+		
+	}
+	
+}
