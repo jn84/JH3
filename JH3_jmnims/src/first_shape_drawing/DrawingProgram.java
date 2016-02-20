@@ -81,10 +81,10 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
         g.setColor(Color.white);
         g.fillRect(0, 0, dimen.width, dimen.height);
         drawing.draw(g);
-        g.setColor(Color.YELLOW);
-        g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
         String str = drawing.toString();
         int textPos = (STATUSBAR_HEIGHT - g.getFontMetrics().getHeight()) / 2;
+        g.setColor(Color.YELLOW);
+        g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
         g.setColor(Color.BLACK);
         g.drawString(str, insets.left, dimen.height - STATUSBAR_HEIGHT + textPos);
         
@@ -105,37 +105,37 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 		{
 		case 'r':
 			this.drawing.setDrawType(DrawType.rectangle);
-			return true;
+			break;
 		case 'o':
 			this.drawing.setDrawType(DrawType.oval);
-			return true;
+			break;
 		case 'l':
 			this.drawing.setDrawType(DrawType.line);
-			return true;
+			break;
 		case 's':
 			this.drawing.setDrawType(DrawType.scribble);
-			return true;
+			break;
 		case 'p':
 		case 'a':
 			this.drawing.setDrawType(DrawType.polygon);
-			return true;
+			break;
 		case 'q':
 			return false;
 		case 'f':
 			this.drawing.setFilled(true);
-			return true;
+			break;
 		case 'd':
 			this.drawing.setFilled(false);
-			return true;
+			break;
 		case 'b':
 			this.drawing.setColor(Color.blue);
-			return true;
+			break;
 		case 'm':
 			this.drawing.setColor(Color.magenta);
-			return true;
+			break;
 		case 'g':
 			this.drawing.setColor(Color.green);
-			return true;
+			break;
 		default: // '?' comes here
 			System.out.println("r - drawType= Rectangle");
 			System.out.println("o - drawType= Oval");
@@ -149,8 +149,10 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 			System.out.println("b - Use Blue Color");
 			System.out.println("m - Use magenta Color");
 			System.out.println("g - Use Green Color");
-			return true;
+			break;
 		}
+		this.repaint();
+		return true;
     }
     
     public void inputProcessor()

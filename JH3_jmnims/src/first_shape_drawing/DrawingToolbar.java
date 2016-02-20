@@ -134,35 +134,30 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 	public void paint(Graphics screen)
 	{
 		super.paint(screen);
-//		Dimension dimen = getSize();
-//        if (offScreenImage==null || !dimen.equals(screenDimension))
-//        {
-//            screenDimension = dimen;
-//            offScreenImage = createImage(dimen.width, dimen.height);
-//        }
-//        Graphics g = offScreenImage.getGraphics();
-//        screen.drawImage(offScreenImage, 0,0,this);
-    	
+		Dimension dimen = getSize();
+        if (offScreenImage == null || !dimen.equals(screenDimension))
+        {
+            screenDimension = dimen;
+            offScreenImage = createImage(dimen.width, dimen.height);
+        }
+        Graphics g = offScreenImage.getGraphics();
+        screen.drawImage(offScreenImage, 0,0,this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		String cmd = e.getActionCommand();
+		System.out.println(e.getSource().toString());
 		if (cmd.equals("f")) // Will always be "f" if fill checkbox changed
 		{
 			if (fillCheckBox.isSelected())
-			{
-				System.out.println("fill box selected: sending f");
 				triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, "f"));
-			}
 			else
-			{
-				System.out.println("fill box not selected: sending d");
 				triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, "d"));
-			}
+			return;
 		}
-		triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, e.getActionCommand()));
+		triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, cmd));
 	}
 
 	@Override
@@ -199,11 +194,7 @@ class DrawingToolBarEvent extends EventObject
 	public DrawingToolBarEvent(Object source, String c)
 	{
 		super(source);
-		if (true)
-			command = ((JCheckBox)source).isSelected() ? "f" : "d";
-		else
-			command = ((JCheckBox)source).isSelected() ? "d" : "f";
-		
+		command = c;
 		System.out.println("command set as: " + command);
 	}
 }
