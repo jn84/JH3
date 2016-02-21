@@ -6,10 +6,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferStrategy;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -18,11 +20,13 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 {
 
 	private final int STATUSBAR_HEIGHT = 20;
+	private final int NUM_BUFFERS = 3;
 	
     Drawing drawing = new Drawing();
     DrawingToolbar drawingToolbar = null;
     Image offScreenImage = null;
     Dimension screenDimension = null;
+    BufferStrategy bufferStrategy = null;
     
     // INNER Class
     class MyMouseHandler extends MouseAdapter
@@ -68,28 +72,33 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
     
     public void paint(Graphics screen)
     {
-        Dimension dimen = getSize();
-        if (offScreenImage == null || !dimen.equals(screenDimension))
-        {
-            screenDimension = dimen;
-            offScreenImage = createImage(dimen.width, dimen.height);
-        }
-        drawingToolbar.repaint();
-        Graphics g = offScreenImage.getGraphics();
-
+    	super.paint(screen);
+    	Dimension dimen = getSize();
         Insets insets = getInsets();
-        g.setColor(Color.white);
-        g.fillRect(0, 0, dimen.width, dimen.height);
-        drawing.draw(g);
-        String str = drawing.toString();
-        int textPos = (STATUSBAR_HEIGHT - g.getFontMetrics().getHeight()) / 2;
-        g.setColor(Color.YELLOW);
-        g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
-        g.setColor(Color.BLACK);
-        g.drawString(str, insets.left, dimen.height - STATUSBAR_HEIGHT + textPos);
+    	if (bufferStrategy == null)
+    	{
+    		createBufferStrategy(NUM_BUFFERS);
+    		bufferStrategy = this.getBufferStrategy();
+    	}
+    	do
+    	{
+    		Graphics g = bufferStrategy.getDrawGraphics();
+    		String str = drawing.toString();
+    		int textPos = (STATUSBAR_HEIGHT - g.getFontMetrics().getHeight()) / 2;
+
+    		g.setColor(Color.white);
+    		g.fillRect(0, 0, dimen.width, dimen.height);
+    		drawing.draw(g);
+    		g.setColor(Color.YELLOW);
+    		g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
+    		g.setColor(Color.BLACK);
+    		g.drawString(str, insets.left, dimen.height - STATUSBAR_HEIGHT + textPos);
+    		drawingToolbar.repaint();
+    		bufferStrategy.show();
+    		g.dispose();
+    	} while (bufferStrategy.contentsLost());
         
-        System.out.println(str);
-        screen.drawImage(offScreenImage, 0,0,this);
+        //screen.drawImage(offScreenImage, 0,0,this);
     }
     
 	@Override

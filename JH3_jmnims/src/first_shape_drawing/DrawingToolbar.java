@@ -19,8 +19,8 @@ import javax.swing.JToolBar;
 
 public class DrawingToolbar extends JToolBar implements ActionListener, DrawingToolbarEventGenerator
 {
-    private Image offScreenImage = null;
-    private Dimension screenDimension = null;
+    private Graphics toolBarBuffer = null;
+    private Dimension toolBarDimension = null;
 	
 	private JPanel shapePanel = null;
 	private JPanel optionPanel = null;
@@ -131,17 +131,14 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		greenButton.addActionListener(this);
 	}
 	
+	public void getGrapicsImage()
+	{
+		Graphics image = this.getGraphics();
+	}
+	
 	public void paint(Graphics screen)
 	{
 		super.paint(screen);
-		Dimension dimen = getSize();
-        if (offScreenImage == null || !dimen.equals(screenDimension))
-        {
-            screenDimension = dimen;
-            offScreenImage = createImage(dimen.width, dimen.height);
-        }
-        Graphics g = offScreenImage.getGraphics();
-        screen.drawImage(offScreenImage, 0,0,this);
 	}
 
 	@Override
