@@ -72,6 +72,7 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
     
     public void paint(Graphics screen)
     {
+    	// First new branch commit just to get things going
     	super.paint(screen);
     	Dimension dimen = getSize();
         Insets insets = getInsets();
