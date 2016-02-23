@@ -7,6 +7,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferStrategy;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -19,9 +22,6 @@ import javax.swing.JToolBar;
 
 public class DrawingToolbar extends JToolBar implements ActionListener, DrawingToolbarEventGenerator
 {
-    private Graphics toolBarBuffer = null;
-    private Dimension toolBarDimension = null;
-	
 	private JPanel shapePanel = null;
 	private JPanel optionPanel = null;
 	private JPanel fillPanel = null;
@@ -48,6 +48,7 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		super();
 		this.setFloatable(false);
 		this.setLayout(new GridLayout(1, 2));
+		this.setDoubleBuffered(true);
 		
 		drawingButtons.add((new ShapeButtonType("Rectangle", "r")));
 		drawingButtons.add((new ShapeButtonType("Oval", "o")));
@@ -131,16 +132,11 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		greenButton.addActionListener(this);
 	}
 	
-	public void getGrapicsImage()
+	protected void paintComponent(Graphics g)
 	{
-		Graphics image = this.getGraphics();
+		super.paintComponent(g);
 	}
 	
-	public void paint(Graphics screen)
-	{
-		super.paint(screen);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
