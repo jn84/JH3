@@ -2,16 +2,13 @@
 
 package first_shape_drawing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferStrategy;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -19,10 +16,11 @@ import javax.swing.JFrame;
 public class DrawingProgram extends JFrame implements DrawingToolbarListener
 {
 
+	private final Dimension initDimen = new Dimension(800, 400);
 	private final int STATUSBAR_HEIGHT = 20;
 	
     Drawing drawing = new Drawing();
-    DrawingToolbar drawingToolbar = null;
+    DrawingToolbar drawingToolbar = new DrawingToolbar();
     Image offScreenImage = null;
     Dimension screenDimension = null;
     
@@ -50,23 +48,20 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
         	repaint();
         }
     }
-    //merge
 
     DrawingProgram()
     {
         super("My Drawing Program");
-        setSize(800, 400);
+        setSize(initDimen);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         MyMouseHandler mmh = new MyMouseHandler();
         addMouseListener(mmh);
         addMouseMotionListener(mmh);
         
-        drawingToolbar = new DrawingToolbar();
         drawingToolbar.addDrawingToolbarEventListener(this);
-        this.add(drawingToolbar, BorderLayout.NORTH);
         setVisible(true);
-        //merge/
+        drawingToolbar.showToolbarWindow(new Dimension(800, 100));
     }
     
     public void paint(Graphics screen)
@@ -89,7 +84,6 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
     	g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
     	g.setColor(Color.BLACK);
     	g.drawString(str, insets.left, dimen.height - STATUSBAR_HEIGHT + textPos);
-    	drawingToolbar.repaint();
         screen.drawImage(offScreenImage, 0, 0, this);
     }
     

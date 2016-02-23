@@ -12,6 +12,7 @@ class DrawingProperties
 	DrawType drawType;
 	boolean filled;
 	Color color;
+	
 	DrawingProperties(DrawType drawType, Color color, boolean filled)
 	{
 		this.drawType = drawType;
@@ -33,6 +34,7 @@ public class Drawing {
 	{
 		return drawingProperties.toString();
 	}
+	
 	public void draw(Graphics g)
 	{
 		for (int i=0; i < shapeArr.size(); i++)
@@ -43,6 +45,7 @@ public class Drawing {
 		if (inProgress != null)
 			inProgress.draw(g);
 	}
+	
 	public void setColor(Color color)
 	{
 		drawingProperties.color = color;
@@ -54,6 +57,12 @@ public class Drawing {
 	}
 	public void setDrawType(DrawType drawType)
 	{
+		if (drawingProperties.drawType == DrawType.polygon)
+		{
+			shapeArr.add(inProgress);
+			inProgress = null;
+		}
+
 		drawingProperties.drawType = drawType;
 	}
 
@@ -61,6 +70,8 @@ public class Drawing {
 	{
 		switch(drawingProperties.drawType)
 		{
+		case polygon:
+			return;
 		case rectangle:
 			inProgress = new Rectangle(drawingProperties.color, drawingProperties.filled);
 			break;
@@ -81,6 +92,8 @@ public class Drawing {
 	{
 		switch(drawingProperties.drawType)
 		{
+		case polygon:
+			return;
 		case rectangle:
 		case oval:
 		case scribble:
@@ -89,17 +102,28 @@ public class Drawing {
 			break;
 		}
 	}
+	
 	public void mouseReleased(Point p)
 	{
+		if (drawingProperties.drawType == DrawType.polygon)
+			return;
 		inProgress.subsequentPoint(p);
 		shapeArr.add(inProgress);
 		inProgress = null;
 	}
-	public void mouseClicked(Point point)
+	
+	public void mouseClicked(Point p)
 	{
-		// Handle toolbar clicks here
-		// Polygon clicks also?
-		
+		if (drawingProperties.drawType == DrawType.polygon)
+		{
+			if (inProgress == null)
+			{
+				inProgress = new Polygon(drawingProperties.color, drawingProperties.filled);
+				inProgress.firstPoint(p);
+			}
+			else
+				inProgress.subsequentPoint(p);
+		}
 	}
 
 }

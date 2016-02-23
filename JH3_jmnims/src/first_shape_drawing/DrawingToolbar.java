@@ -2,26 +2,24 @@ package first_shape_drawing;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferStrategy;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.EventObject;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.WindowConstants;
 
 public class DrawingToolbar extends JToolBar implements ActionListener, DrawingToolbarEventGenerator
 {
+	// Toolbar components
 	private JPanel shapePanel = null;
 	private JPanel optionPanel = null;
 	private JPanel fillPanel = null;
@@ -43,6 +41,9 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 	private ArrayList<DrawingToolbarListener> drawingToolbarListeners = 
 			new ArrayList<DrawingToolbarListener>();
 	
+	// Toolbar window components
+	JFrame toolbarWindow = new JFrame("Drawing Tools");
+		
 	public DrawingToolbar()
 	{
 		super();
@@ -50,6 +51,7 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		this.setLayout(new GridLayout(1, 2));
 		this.setDoubleBuffered(true);
 		
+		// Add a button with a single line
 		drawingButtons.add((new ShapeButtonType("Rectangle", "r")));
 		drawingButtons.add((new ShapeButtonType("Oval", "o")));
 		drawingButtons.add((new ShapeButtonType("Line", "l")));
@@ -107,6 +109,24 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		this.add(optionPanel);
 		
 		this.registerActionListeners();
+		
+		toolbarWindow.add(this);
+		toolbarWindow.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+	}
+	
+	public void showToolbarWindow(Dimension windowSize)
+	{
+		if (!toolbarWindow.isVisible())
+		{
+			toolbarWindow.setSize(windowSize);
+			toolbarWindow.setVisible(true);
+		}	
+	}
+	
+	public void hideToolbarWindow()
+	{
+		if (toolbarWindow.isVisible())
+			toolbarWindow.setVisible(false);
 	}
 	
 	private void addShapeButtons(JPanel p)
@@ -130,11 +150,6 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		blueButton.addActionListener(this);
 		magentaButton.addActionListener(this);
 		greenButton.addActionListener(this);
-	}
-	
-	protected void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
 	}
 	
 	@Override
