@@ -66,7 +66,7 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
         drawingToolbar.addDrawingToolbarEventListener(this);
         this.add(drawingToolbar, BorderLayout.NORTH);
         setVisible(true);
-        //merge
+        //merge/
     }
     
     public void paint(Graphics screen)
