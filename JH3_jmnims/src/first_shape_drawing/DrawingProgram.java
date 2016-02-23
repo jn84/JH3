@@ -52,7 +52,7 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
         	repaint();
         }
     }
-    
+    //merge
 
     DrawingProgram()
     {
