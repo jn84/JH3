@@ -50,7 +50,6 @@ class Rectangle extends Shape
 			g.fillRect(x, y, w, h);
 		else
 			g.drawRect(x, y, w, h);
-
 	}
 	
 	@Override
@@ -126,7 +125,6 @@ class Oval extends Shape
 			g.fillOval(x, y, w, h);
 		else
 			g.drawOval(x, y, w, h);
-		
 	}
 
 	@Override
@@ -135,7 +133,6 @@ class Oval extends Shape
 		lastPoint = p;
 		
 	}
-	
 }
 
 class Line extends Shape
@@ -198,9 +195,7 @@ class Polygon extends Shape
 		{
 			x[i] = points.get(i).x;
 			y[i] = points.get(i).y;
-			System.out.println("(" + x[i] + ", " + y[i] + ")");
 		}
-		System.out.println("END POLY");
 		
 		g.setColor(color);
 		if (filled)

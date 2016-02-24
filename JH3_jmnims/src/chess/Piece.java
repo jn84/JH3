@@ -24,14 +24,14 @@ class ChessPiece
 
     public void draw(Graphics g, int x, int y, int wSpace, int hSpace)
     {
-        double scale_width = (double)wSpace/width;
-        double scale_height = (double)hSpace/height;
+        double scale_width = (double) wSpace / width;
+        double scale_height = (double) hSpace / height;
         
         double scale = Math.min(scale_width, scale_height);
-        int newHeight = (int)(height*scale);
-        int newWidth = (int)(width*scale);
-        x = x + wSpace/2 - newWidth/2;
-        y = y + hSpace/2 - newHeight/2;
+        int newHeight = (int) (height * scale);
+        int newWidth = (int) (width * scale);
+        x = x + wSpace / 2 - newWidth / 2;
+        y = y + hSpace / 2 - newHeight / 2;
         g.drawImage(pieceImg, x, y, newWidth, newHeight, null);
     }
     
@@ -43,7 +43,7 @@ class ChessPiece
     // helper method to load the image files
     private Image loadImage(String fileName) 
     {
-    	return new ImageIcon("Resources\\" + fileName).getImage();
+    	return new ImageIcon("ChessResources\\" + fileName).getImage();
     }
     
     // Constructor (the color of the piece, the id of the piece (from the enum?))
@@ -58,7 +58,7 @@ class ChessPiece
         // Load the image
         pieceImg = loadImage(imageName);
         
-        // set the private member integer variables so that we know how big the image is 
+        // set the integer variables so that we know how big the image is 
         width = pieceImg.getWidth(null);
         height = pieceImg.getHeight(null);
     }
@@ -69,9 +69,7 @@ class ChessPiece
 // Should adjust when the window size is changed to manage scaling
 class BoardDimensions 
 {
-	// LEFT AND TOP are the position in the window (insets)
-	
-	
+	// left and top are the left and top window insets
     int left, top, square_width, square_height;
     BoardDimensions(int left, int top, int square_width, int square_height)
     {
@@ -83,7 +81,7 @@ class BoardDimensions
 }
 
 
-//Create a piece object for each piece
+// Create a piece object for each piece
 // Keeps track of the piece's location on the board
 // Stores the pieces type and color
 

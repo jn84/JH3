@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 public class ChessBoard extends JFrame
 {
-	private final int windowHeight = 200, windowWidth = 200;
+	private final int windowHeight = 400, windowWidth = 400;
 
 	private final Color[] boardColors = { Color.ORANGE, Color.CYAN };
 	
@@ -45,8 +45,6 @@ public class ChessBoard extends JFrame
 					this.getInsets().top, 
 					this.getContentPane().getWidth() / 8, 
 					this.getContentPane().getHeight() / 8);
-		
-		
 		 
 		Color rectColor = boardColors[0];
 		for (int i = 0; i < 8; i++) // 8 rows

@@ -17,9 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
+import org.omg.PortableServer.DynamicImplementation;
+
+
+
+// Stand alone toolbar class
+// Implements custom events to which the instantiating object can subscribe
 public class DrawingToolbar extends JToolBar implements ActionListener, DrawingToolbarEventGenerator
 {
-	// Toolbar components
+	private final Dimension windowSize = new Dimension(800, 150);
+	
+	//// Toolbar components
 	private JPanel shapePanel = null;
 	private JPanel optionPanel = null;
 	private JPanel fillPanel = null;
@@ -36,12 +44,15 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 	private JButton magentaButton = null;
 	private JButton greenButton = null;
 	
+	// Array to store the various shape buttons
 	private ArrayList<ShapeButtonType> drawingButtons =
 			new ArrayList<ShapeButtonType>();
+	
+	// Store the subscriptions to this objects events
 	private ArrayList<DrawingToolbarListener> drawingToolbarListeners = 
 			new ArrayList<DrawingToolbarListener>();
 	
-	// Toolbar window components
+	//// Toolbar window components
 	JFrame toolbarWindow = new JFrame("Drawing Tools");
 		
 	public DrawingToolbar()
@@ -51,14 +62,13 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		this.setLayout(new GridLayout(1, 2));
 		this.setDoubleBuffered(true);
 		
-		// Add a button with a single line
+		// Easily add/remove/reorganize shape buttons with single lines
 		drawingButtons.add((new ShapeButtonType("Rectangle", "r")));
 		drawingButtons.add((new ShapeButtonType("Oval", "o")));
 		drawingButtons.add((new ShapeButtonType("Line", "l")));
 		drawingButtons.add((new ShapeButtonType("Scribble", "s")));
 		drawingButtons.add((new ShapeButtonType("Polygon", "p")));
 		drawingButtons.add((new ShapeButtonType("Finish Polygon", "a")));
-		
 		
 		// Create and configure toolbar objects
 		shapePanel = new JPanel(new GridLayout(2, 0));
@@ -75,19 +85,18 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		
 		colorSelectLabel = new JLabel("Color Selection");
 		colorSelectLabel.setHorizontalAlignment(CENTER);
+		
 		blueButton = new JButton();
-		magentaButton = new JButton();
-		greenButton = new JButton();
-		
 		blueButton.setActionCommand("b");
-		magentaButton.setActionCommand("m");
-		greenButton.setActionCommand("g");
-		
-		
 		blueButton.setBackground(Color.BLUE);
-		magentaButton.setBackground(Color.MAGENTA);
-		greenButton.setBackground(Color.GREEN);
 		
+		magentaButton = new JButton();
+		magentaButton.setActionCommand("m");
+		magentaButton.setBackground(Color.MAGENTA);
+		
+		greenButton = new JButton();
+		greenButton.setActionCommand("g");
+		greenButton.setBackground(Color.GREEN);
 		
 		// Add toolbar objects
 		this.addShapeButtons(shapePanel);
@@ -112,36 +121,37 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		
 		toolbarWindow.add(this);
 		toolbarWindow.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		toolbarWindow.setSize(windowSize);
 	}
 	
-	public void showToolbarWindow(Dimension windowSize)
+	public void toggleToolbarWindow()
 	{
 		if (!toolbarWindow.isVisible())
-		{
-			toolbarWindow.setSize(windowSize);
 			toolbarWindow.setVisible(true);
-		}	
-	}
-	
-	public void hideToolbarWindow()
-	{
-		if (toolbarWindow.isVisible())
+		else
 			toolbarWindow.setVisible(false);
 	}
 	
+	// Add the buttons from the drawingButtons array
 	private void addShapeButtons(JPanel p)
 	{
+		// Create a JButton array based on the drawingButtons array
 		toolbarButtons = new ArrayList<JButton>();
 		for (int i = 0; i < drawingButtons.size(); i++)
 		{
 			toolbarButtons.add(new JButton(drawingButtons.get(i).label));
+			
+			// Set the action command for the button (the command that will be passed to the event generator)
 			toolbarButtons.
 				get(toolbarButtons.size() - 1).
 					setActionCommand(drawingButtons.get(i).cmd);
+			
+			// Add the button to the proper panel within the JToolBar
 			p.add(toolbarButtons.get(i));
 		}
 	}
 	
+	// Register the listeners for the buttons
 	private void registerActionListeners()
 	{
 		for (JButton button : toolbarButtons)
@@ -152,13 +162,15 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		greenButton.addActionListener(this);
 	}
 	
+	// Handle button presses and trigger the custom event so that
+	// the instantiating object can know what happened
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		String cmd = e.getActionCommand();
-		System.out.println(e.getSource().toString());
 		if (cmd.equals("f")) // Will always be "f" if fill checkbox changed
 		{
+			// Determine which command to send based on the state of the checkbox
 			if (fillCheckBox.isSelected())
 				triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, "f"));
 			else
@@ -168,12 +180,15 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 		triggerDrawingToolbarEvent(new DrawingToolBarEvent(e, cmd));
 	}
 
+	// Add a listener to the listeners array
 	@Override
 	public void addDrawingToolbarEventListener(DrawingToolbarListener listener)
 	{
 		drawingToolbarListeners.add(listener);
 	}
 	
+	// If there are no listeners, forget about it and return.
+	// Otherwise, send the event to each listener
 	private void triggerDrawingToolbarEvent(DrawingToolBarEvent e) {
 		if (drawingToolbarListeners == null || drawingToolbarListeners.isEmpty())
 			return;
@@ -181,6 +196,7 @@ public class DrawingToolbar extends JToolBar implements ActionListener, DrawingT
 			drawingToolbarListeners.get(i).handleDrawingToolbarEvent(e);
 		}
 	}
+	
 	
 	private class ShapeButtonType
 	{
@@ -203,7 +219,6 @@ class DrawingToolBarEvent extends EventObject
 	{
 		super(source);
 		command = c;
-		System.out.println("command set as: " + command);
 	}
 }
 

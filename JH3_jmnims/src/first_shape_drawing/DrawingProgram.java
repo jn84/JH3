@@ -24,7 +24,6 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
     Image offScreenImage = null;
     Dimension screenDimension = null;
     
-    // INNER Class
     class MyMouseHandler extends MouseAdapter
     {        
         public void mousePressed(MouseEvent e)
@@ -61,39 +60,57 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
         
         drawingToolbar.addDrawingToolbarEventListener(this);
         setVisible(true);
-        drawingToolbar.showToolbarWindow(new Dimension(800, 100));
     }
     
     public void paint(Graphics screen)
     {
     	Dimension dimen = getSize();
         Insets insets = getInsets();
+        
+        // If the buffer image doesn't exist or the screen size changed
         if (offScreenImage == null || !dimen.equals(screenDimension))
         {
+        	// Create a new image of the needed size
             screenDimension = dimen;
             offScreenImage = createImage(dimen.width, dimen.height);
         }
+        
+        // Get a graphics object representing the buffer image
         Graphics g = offScreenImage.getGraphics();
+        
+        // Get the status bar text
     	String str = drawing.toString();
+    	
+    	// Calculate the status bar text y position so that it's vertically centered on the status bar
     	int textPos = (STATUSBAR_HEIGHT - g.getFontMetrics().getHeight()) / 2;
 
+    	// Fill background
     	g.setColor(Color.white);
     	g.fillRect(0, 0, dimen.width, dimen.height);
+    	
+    	// Draw shapes
     	drawing.draw(g);
+    	
+    	// Draw rectangle for status bar
     	g.setColor(Color.YELLOW);
     	g.fillRect(0, dimen.height - insets.bottom - STATUSBAR_HEIGHT, dimen.width, STATUSBAR_HEIGHT);
+    	
+    	// Draw text for status bar
     	g.setColor(Color.BLACK);
     	g.drawString(str, insets.left, dimen.height - STATUSBAR_HEIGHT + textPos);
+    	
+    	// Draw the buffer image to the screen
         screen.drawImage(offScreenImage, 0, 0, this);
     }
     
+    // Capture events from the drawing toolbar and send the command to the handler
 	@Override
 	public void handleDrawingToolbarEvent(DrawingToolBarEvent e)
 	{
 		commandHandler(e.command.charAt(0));
 	}
     
-    
+    // Process commands
     public boolean commandHandler(char cmd)
     {
 		switch(cmd)
@@ -131,6 +148,8 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 		case 'g':
 			this.drawing.setColor(Color.green);
 			break;
+		case 't':
+			this.drawingToolbar.toggleToolbarWindow();
 		default: // '?' comes here
 			System.out.println("r - drawType= Rectangle");
 			System.out.println("o - drawType= Oval");
@@ -144,12 +163,14 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 			System.out.println("b - Use Blue Color");
 			System.out.println("m - Use magenta Color");
 			System.out.println("g - Use Green Color");
+			System.out.println("t - Toggle visibility of toolbar window");
 			break;
 		}
 		this.repaint();
 		return true;
     }
     
+    // Process keyboard input while command handler returns true
     public void inputProcessor()
     {
     	Scanner keyboard = new Scanner(System.in);
@@ -158,7 +179,7 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 
     	while(continueFlag)
     	{
-    		System.out.println("Cmds: r,o,l,s,p,a,q,?,f,d,b,m,g");
+    		System.out.println("Commands: ?, r, o, l, s, p, a, q, f, d, b, m, g, t");
     		String str = keyboard.next().toLowerCase();
     		if (str.length() < 1) 
     			continue;

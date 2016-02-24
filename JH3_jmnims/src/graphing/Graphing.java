@@ -26,7 +26,8 @@ class GBar
 
 public class Graphing extends JFrame
 {
-	final int BORDER_WIDTH = 10;
+	private final int BORDER_WIDTH = 10;
+	private final int BUFFER_SPACE = 8;
 
 	ArrayList<GBar> gbarArr = new ArrayList<GBar>();
 	GraphDataReader gdr = null;
@@ -95,9 +96,10 @@ public class Graphing extends JFrame
 			int strMaxWidth = left + getMaxTextWidth(gbarArr, fm);
 			int x_bar_start = strMaxWidth + 1/* a little white space pad */;
 
-			int barMaxValue = getMaxBarWidth(gbarArr);   
-			//  - BORDER_WIDTH adds some space between border and longest graph bar
-			double scale = (dimen.width - x_bar_start - right - BORDER_WIDTH) / (double) barMaxValue;
+			int barMaxValue = getMaxBarWidth(gbarArr);
+			
+			//  - BUFFER_SPACE adds some space between border and longest graph bar
+			double scale = (dimen.width - x_bar_start - right - BUFFER_SPACE) / (double) barMaxValue;
 
 			int y_start = top;
 

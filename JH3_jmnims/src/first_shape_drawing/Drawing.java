@@ -19,22 +19,26 @@ class DrawingProperties
 		this.color = color;
 		this.filled = filled;
 	}
+	
 	public String toString()
 	{
 		return drawType + "      color = " + color +"      filled = "+ filled;
 	}
 }
 
-public class Drawing {
+public class Drawing 
+{
 	DrawingProperties drawingProperties = new DrawingProperties(DrawType.rectangle, Color.blue, false);
 	ArrayList<Shape> shapeArr = new ArrayList<Shape>();
 	Shape inProgress = null;
 
+	// Return the current drawing settings
 	public String toString()
 	{
 		return drawingProperties.toString();
 	}
 	
+	// Draw the previously drawn shapes and the inProgress shape
 	public void draw(Graphics g)
 	{
 		for (int i=0; i < shapeArr.size(); i++)
@@ -55,14 +59,17 @@ public class Drawing {
 	{
 		drawingProperties.filled = filled;
 	}
+	
+	// Sets the drawtype with special handling for the polygon case
 	public void setDrawType(DrawType drawType)
 	{
-		if (drawingProperties.drawType == DrawType.polygon)
+		// If we don't check for null, a null shape can be added to shapeArr causing NPE on draw() calls
+		if (drawingProperties.drawType == DrawType.polygon && inProgress != null)
 		{
+			// Finish polygon
 			shapeArr.add(inProgress);
 			inProgress = null;
 		}
-
 		drawingProperties.drawType = drawType;
 	}
 
@@ -70,7 +77,7 @@ public class Drawing {
 	{
 		switch(drawingProperties.drawType)
 		{
-		case polygon:
+		case polygon:  // polygon doesn't work with mousePressed
 			return;
 		case rectangle:
 			inProgress = new Rectangle(drawingProperties.color, drawingProperties.filled);
@@ -92,7 +99,7 @@ public class Drawing {
 	{
 		switch(drawingProperties.drawType)
 		{
-		case polygon:
+		case polygon: // polygon doesn't work with mouseDragged
 			return;
 		case rectangle:
 		case oval:
@@ -105,6 +112,7 @@ public class Drawing {
 	
 	public void mouseReleased(Point p)
 	{
+		// polygon doesn't work with mouseReleased
 		if (drawingProperties.drawType == DrawType.polygon)
 			return;
 		inProgress.subsequentPoint(p);
@@ -112,6 +120,7 @@ public class Drawing {
 		inProgress = null;
 	}
 	
+	// Polygon works with clicks
 	public void mouseClicked(Point p)
 	{
 		if (drawingProperties.drawType == DrawType.polygon)
