@@ -17,10 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 
-import org.omg.PortableServer.DynamicImplementation;
-
-
-
 // Stand alone toolbar class
 // Implements custom events to which the instantiating object can subscribe
 public class DrawingToolbar extends JToolBar implements ActionListener, DrawingToolbarEventGenerator
