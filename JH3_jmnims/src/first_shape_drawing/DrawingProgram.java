@@ -150,6 +150,7 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 			break;
 		case 't':
 			this.drawingToolbar.toggleToolbarWindow();
+			break;
 		default: // '?' comes here
 			System.out.println("r - drawType= Rectangle");
 			System.out.println("o - drawType= Oval");
