@@ -107,7 +107,11 @@ public class DrawingProgram extends JFrame implements DrawingToolbarListener
 	@Override
 	public void handleDrawingToolbarEvent(DrawingToolBarEvent e)
 	{
-		commandHandler(e.command.charAt(0));
+		char c = e.command.charAt(0);
+		commandHandler(c);
+		System.out.println(c);
+		System.out.println("Commands: ?, r, o, l, s, p, a, q, f, d, b, m, g, t");
+		
 	}
     
     // Process commands
